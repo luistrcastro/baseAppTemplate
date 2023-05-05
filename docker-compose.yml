@@ -1,0 +1,111 @@
+version: "3"
+services:
+    selenium:
+        image: selenium/standalone-chrome
+        container_name: selenium
+        ports:
+            - 4444:4444
+            - 7900:7900
+
+    # Distributed object caching
+    memcached:
+        image: memcached:alpine
+        container_name: memcached
+        depends_on:
+            - webserver
+
+    # In-memory structure store
+    redis:
+        image: redis:alpine
+        container_name: redis
+        depends_on:
+            - webserver
+
+    client:
+        build:
+            context: ./client
+            dockerfile: ../.docker/client/Dockerfile
+        container_name: client
+        environment:
+            NUXT_HOST: 0.0.0.0
+            NUXT_PORT: 3000
+        volumes:
+            - ./client:/client
+        working_dir: /client
+        hostname: client
+        ports:
+            - 3000:3000
+            # The Vite port for WebSocket
+            - 24678:24678
+        networks:
+            - app-network
+
+    #PHP Service
+    app:
+        build:
+            context: .
+            dockerfile: .docker/app/Dockerfile
+        image: digitalocean.com/php
+        container_name: app
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - .docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - app-network
+
+    #Nginx Service
+    webserver:
+        image: nginx:alpine
+        container_name: webserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8000:80"
+            - "443:443"
+        volumes:
+            - ./:/var/www
+            - .docker/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+
+    #MySQL Service
+    db:
+        image: mysql:8.0
+        container_name: app-db
+        restart: unless-stopped
+        tty: true
+        command: mysqld --default-authentication-plugin=mysql_native_password
+        ports:
+            - "3309:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_ROOT_HOST=%
+
+            # Leverage the Laravel .env file
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+        volumes:
+            - ./:/var/www
+            - dbdata:/var/lib/mysql
+            # - .docker/mysql/my.cnf:/etc/mysql/my.cnf
+            - ./docker/mysql/init:/docker-entrypoint-initdb.d
+        networks:
+            - app-network
+
+#Docker Networks
+networks:
+    app-network:
+        driver: bridge
+
+#Volumes
+volumes:
+    db:
+    dbdata:
+        driver: local
