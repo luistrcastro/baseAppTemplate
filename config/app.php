@@ -187,6 +187,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Cog\Laravel\Optimus\Providers\OptimusServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -212,6 +213,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Optimus' => Cog\Laravel\Optimus\Facades\Optimus::class,
     ])->toArray(),
 
 ];

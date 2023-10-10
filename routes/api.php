@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AccountAPIController;
+use App\Http\Controllers\CategoryAPIController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TransactionAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +18,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::middleware(['auth:sanctum'])->get('user', [LoginController::class, 'me'])->name('me');
+
+Route::apiResource('categories', CategoryAPIController::class);
+Route::post('categories/restore/{categoryId}', [CategoryAPIController::class, 'restore']);
+Route::get('base_categories', [CategoryAPIController::class, 'baseCategories']);
+
+Route::apiResource('transactions', TransactionAPIController::class);
+Route::post('transactions/per_period', [TransactionAPIController::class, 'perPeriod']);
+Route::post('transactions/bulk', [TransactionAPIController::class, 'bulk']);
+
+Route::apiResource('accounts', AccountAPIController::class);
+
+Route::get('test', function () {
+  return 'test successful';
 });

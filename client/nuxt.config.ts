@@ -1,36 +1,56 @@
-import { defineNuxtConfig } from 'nuxt/config';
+import { defineNuxtConfig } from "nuxt/config";
+import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-	app: {
-		head: {
-			title: 'BaseApp',
-		},
-	},
+    app: {
+        head: {
+            title: "Toonie",
+        },
+    },
 
-	build: {
-		transpile: ['vuetify'],
-	},
+    build: {
+        transpile: ["vuetify"],
+    },
 
-	css: [
-		'vuetify/lib/styles/main.sass',
-		'@mdi/font/css/materialdesignicons.min.css',
-	],
+    css: [
+        "assets/main.css",
+        "assets/main.scss",
+        "vuetify/lib/styles/main.sass",
+        "@mdi/font/css/materialdesignicons.min.css",
+    ],
 
-	modules: ['@pinia/nuxt'],
+    modules: [
+        (_options, nuxt) => {
+            nuxt.hooks.hook("vite:extendConfig", (config) => {
+                // @ts-expect-error
+                config.plugins.push(vuetify({ autoImport: true }));
+            });
+        },
+        "@pinia/nuxt",
+    ],
 
-	runtimeConfig: {
-		public: {
-			backendUrl: 'http://localhost:8000',
-			frontendUrl: 'http://localhost:3000',
-		},
-	},
+    vite: {
+        vue: {
+            template: {
+                transformAssetUrls,
+            },
+        },
+    },
 
-	imports: {
-		dirs: ['./utils', './stores'],
-	},
+    runtimeConfig: {
+        public: {
+            backendUrl: "http://localhost:8000",
+            frontendUrl: "http://localhost:3000",
+            title: "Toonie",
+        },
+    },
 
-	pinia: {
-		autoImports: ['defineStore', 'acceptHMRUpdate'],
-	},
+    imports: {
+        dirs: ["./utils", "./stores"],
+    },
+
+    pinia: {
+        autoImports: ["defineStore", "acceptHMRUpdate"],
+    },
 });
