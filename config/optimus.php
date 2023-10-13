@@ -42,13 +42,17 @@ return [
 
         'alternative' => ['prime' => '1805598649', 'inverse'=> '1060443785', 'random' => '1884825897'],
 
-        'Account' => ['prime' => env('HASH_ACCOUNT'), 'inverse' => env('HASH_ACCOUNT_INVERSE'), 'random' => env('HASH_ACCOUNT_RANDOM')],
+        'Account' => ['prime' => env('HASH_ACCOUNT', '212790001'), 'inverse' => env('HASH_ACCOUNT_INVERSE', '1366083089'), 'random' => env('HASH_ACCOUNT_RANDOM', '1436866104')],
+        
+        'Budget' => ['prime' => env('HASH_BUDGET', '212790001'), 'inverse' => env('HASH_BUDGET_INVERSE', '1366083089'), 'random' => env('HASH_BUDGET_RANDOM', '1436866104')],
+        
+        'Category' => ['prime' => env('HASH_CATEGORY', '1412622791'), 'inverse' => env('HASH_CATEGORY_INVERSE', '228853751'), 'random' => env('HASH_CATEGORY_RANDOM', '679295758')],
+        
+        'MonthBudget' => ['prime' => env('HASH_MONTH_BUDGET', '212790001'), 'inverse' => env('HASH_MONTH_BUDGET_INVERSE', '1366083089'), 'random' => env('HASH_MONTH_BUDGET_RANDOM', '1436866104')],
 
-        'Category' => ['prime' => env('HASH_CATEGORY'), 'inverse' => env('HASH_CATEGORY_INVERSE'), 'random' => env('HASH_CATEGORY_RANDOM')],
+        'Transaction' => ['prime' => env('HASH_TRANSACTION', '401346571'), 'inverse' => env('HASH_TRANSACTION_INVERSE', '977664931'), 'random' => env('HASH_TRANSACTION_RANDOM', '1530135426')],
 
-        'Transaction' => ['prime' => env('HASH_TRANSACTION'), 'inverse' => env('HASH_TRANSACTION_INVERSE'), 'random' => env('HASH_TRANSACTION_RANDOM')],
-
-        'User' => ['prime' => env('HASH_USER'), 'inverse' => env('HASH_USER_INVERSE'), 'random' => env('HASH_USER_RANDOM')],
+        'User' => ['prime' => env('HASH_USER', '1996228051'), 'inverse' => env('HASH_USER_INVERSE', '80976475'), 'random' => env('HASH_USER_RANDOM', '1957844967')],
     ],
 
 ];

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\AuthUserScope;
+use App\Services\HashableService;
 use App\Traits\HashedId;
 use Database\Factories\CategoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 
 class Category extends Model
 {
@@ -94,5 +97,30 @@ class Category extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**---------------------
+     * - Accessors and Mutators:
+     * ---------------------**/
+
+     public function userId(): Attribute
+     {
+         return Attribute::get(fn($value)=> HashableService::getHash($value, 'User'));
+     }
+
+     public function parentCategoryId(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => HashableService::getHash($value, 'Category'),
+            set: fn ($value) => HashableService::decodeHash($value, 'Category'),
+        );
+    }
+
+    public function monthBudgetId(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => HashableService::getHash($value, 'MonthBudget'),
+            set: fn ($value) => HashableService::decodeHash($value, 'MonthBudget'),
+        );
     }
 }

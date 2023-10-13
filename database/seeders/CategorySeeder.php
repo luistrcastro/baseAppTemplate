@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -15,9 +14,7 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('categories')->delete();
-
-        \DB::table('categories')->insert(array (
+        DB::table('categories')->upsert(array (
             0 =>
             array (
                 'id' => 1,
@@ -378,6 +375,6 @@ class CategorySeeder extends Seeder
                 'icon' => 'bank-transfer-in',
                 'description' => 'Paycheck, Bonus, Gifts...',
             ),
-        ));
+        ), 'id');
     }
 }

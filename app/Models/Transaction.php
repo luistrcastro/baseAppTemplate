@@ -32,10 +32,11 @@ class Transaction extends Model
     }
 
     public $fillable = [
+      'user_id',
+      'category_id',
       'account_id',
-        'user_id',
         'parent_transaction_id',
-        'category_id',
+        'budget_id',
         'description',
         'value',
         'date',
@@ -53,6 +54,7 @@ class Transaction extends Model
       'account_id' => 'integer',
         'user_id' => 'integer',
         'parent_transaction_id' => 'integer',
+        'budget_id' => 'integer',
         'category_id' => 'integer',
         'description' => 'string',
         'value' => 'decimal:2',
@@ -70,7 +72,8 @@ class Transaction extends Model
     public static array $createRules = [
       'account_id' => 'required|integer',
         'parent_transaction_id' => 'nullable|integer',
-        'category_id' => 'nullable|integer',
+        'category_id' => 'nullable|integer|exists:category,id',
+        'budget_id' => 'nullable|integer|exists:budget,id',
         'description' => 'required|string|max:255',
         'value' => 'required|numeric',
         'date' => 'required|date',
@@ -81,7 +84,8 @@ class Transaction extends Model
 
     public static array $updateRules = [
       'account_id'=>'required|integer',
-        'category_id' => 'nullable|integer',
+        'category_id' => 'nullable|integer|exists:category,id',
+        'budget_id' => 'nullable|integer|exists:budget,id',
         'description' => 'required|string|max:255',
         'value' => 'required|numeric',
         'date' => 'required|date',
@@ -92,7 +96,7 @@ class Transaction extends Model
     /**---------------------
      * - Relationships:
      * ---------------------**/
-    public const relations = ['user', 'category'];
+    public const relations = ['user', 'category', 'budget'];
 
     /**
      * Get the user the transaction belongs to.
@@ -110,6 +114,11 @@ class Transaction extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
+    public function budget(): BelongsTo
+    {
+      return $this->belongsTo(Budget::class, 'budget_id');
+    }
+
     /**---------------------
      * - Accessors and Mutators:
      * ---------------------**/
@@ -120,14 +129,6 @@ class Transaction extends Model
     }
 
     public function categoryId(): Attribute
-    {
-        return new Attribute(
-            get: fn ($value) => HashableService::getHash($value, 'Category'),
-            set: fn ($value) => HashableService::decodeHash($value, 'Category'),
-        );
-    }
-
-    public function parentCategoryId(): Attribute
     {
         return new Attribute(
             get: fn ($value) => HashableService::getHash($value, 'Category'),

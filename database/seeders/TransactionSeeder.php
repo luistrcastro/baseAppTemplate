@@ -16,10 +16,9 @@ class TransactionSeeder extends Seeder
      */
     public function run(): void
     {
-        \DB::table('transactions')->delete();
-
         $firstUser = User::first();
         Auth::login($firstUser);
+        Transaction::where('user_id', 1)->delete();
         Transaction::factory()->count(30)->create();
     }
 }

@@ -3,7 +3,9 @@
 return [
     'hashMap' => [
         'Account' => 'Account',
+        'Budget' => 'Budget',
         'Category' => 'Category',
+        'MonthBudget' => 'MonthBudget',
         'Transaction' => 'Transaction',
         'User' => 'User',
     ],
