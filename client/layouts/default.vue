@@ -66,7 +66,7 @@
 <script setup lang="ts">
 import { useTheme } from "vuetify/lib/framework.mjs";
 // import { useAuthStore } from "~~/store/auth";
-import { useCategoryStore } from "~/stores/categories";
+import useCategoryStore from "~/stores/useCategoryStore";
 import { useAccountStore } from "~/stores/accounts";
 
 // APP THEME

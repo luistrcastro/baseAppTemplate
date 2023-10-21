@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCategoryStore } from "~/stores/categories";
+import useCategoryStore from "~/stores/useCategoryStore";
 
 definePageMeta({
     title: "Categories",

@@ -15,8 +15,6 @@ return new class extends Migration
         Schema::create('month_budgets', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->nullable()->default(null)->index();
-            $table->decimal('percentage')->nullable()->default(null);
-            $table->string('type', 25);
             $table->string('name', 25);
             $table->string('color', 25);
             $table->string('icon', 25);

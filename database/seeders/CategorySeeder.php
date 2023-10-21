@@ -19,6 +19,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 1,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Beauty',
@@ -31,6 +32,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 2,
                 'parent_category_id' => null,
+                'month_budget_id' => 4,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Alcohol',
@@ -43,6 +45,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 3,
                 'parent_category_id' => null,
+                'month_budget_id' => 3,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Education',
@@ -55,6 +58,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 4,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Electricity',
@@ -67,6 +71,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 5,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Grocery',
@@ -79,6 +84,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 6,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'House',
@@ -91,6 +97,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 7,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Insurances',
@@ -103,6 +110,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 8,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Communication',
@@ -115,6 +123,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 9,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Pharmacy',
@@ -127,6 +136,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 10,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Rent',
@@ -139,6 +149,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 11,
                 'parent_category_id' => null,
+                'month_budget_id' => 4,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Restaurant, Fast-food',
@@ -151,6 +162,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 12,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Pets',
@@ -163,6 +175,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 13,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Tax',
@@ -175,6 +188,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 14,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Transportation',
@@ -187,6 +201,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 15,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Streaming',
@@ -199,6 +214,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 16,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Health & Well-being',
@@ -211,10 +227,11 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 17,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
-                'name' => 'Tech',
-                'slug' => 'tech',
+                'name' => 'Tech Expenses',
+                'slug' => 'tech_expenses',
                 'color' => 'deep-orange lighten-2',
                 'icon' => 'devices',
                 'description' => 'VPN, Anti-virus, Software...',
@@ -223,6 +240,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 18,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Daily Expenses',
@@ -235,6 +253,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 19,
                 'parent_category_id' => null,
+                'month_budget_id' => 4,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Leisure',
@@ -247,10 +266,11 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 20,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
-                'name' => 'Purchase',
-                'slug' => 'purchase',
+                'name' => 'Purchases',
+                'slug' => 'purchases',
                 'color' => 'blue-grey darken-4',
                 'icon' => 'credit-card-outline',
                 'description' => 'General purchases',
@@ -259,10 +279,11 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 21,
                 'parent_category_id' => null,
+                'month_budget_id' => 4,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
-                'name' => 'Gift',
-                'slug' => 'gift',
+                'name' => 'Gifts',
+                'slug' => 'gifts',
                 'color' => 'brown darken-4',
                 'icon' => 'gift-outline',
                 'description' => 'Birthday, Anniversaries, Other gifts',
@@ -271,6 +292,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 22,
                 'parent_category_id' => null,
+                'month_budget_id' => 4,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Travel',
@@ -283,6 +305,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 23,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Withdrawal',
@@ -295,6 +318,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 24,
                 'parent_category_id' => null,
+                'month_budget_id' => 4,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Coffee Shops',
@@ -307,6 +331,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 25,
                 'parent_category_id' => null,
+                'month_budget_id' => 5,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Savings',
@@ -319,6 +344,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 26,
                 'parent_category_id' => null,
+                'month_budget_id' => 5,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Investing',
@@ -331,6 +357,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 28,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Vehicle',
@@ -343,6 +370,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 29,
                 'parent_category_id' => null,
+                'month_budget_id' => 2,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Kids',
@@ -355,6 +383,7 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 30,
                 'parent_category_id' => null,
+                'month_budget_id' => null,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
                 'name' => 'Transfer',
@@ -367,13 +396,27 @@ class CategorySeeder extends Seeder
             array (
                 'id' => 31,
                 'parent_category_id' => null,
+                'month_budget_id' => 1,
                 'user_id' => null,
                 'created_at' => '2022-08-28 14:18:26',
-                'name' => 'Income',
-                'slug' => 'income',
+                'name' => 'Payroll',
+                'slug' => 'payroll',
                 'color' => 'green accent-4',
                 'icon' => 'bank-transfer-in',
-                'description' => 'Paycheck, Bonus, Gifts...',
+                'description' => 'Paycheck',
+            ),
+            31 =>
+            array (
+                'id' => 32,
+                'parent_category_id' => null,
+                'month_budget_id' => 1,
+                'user_id' => null,
+                'created_at' => '2022-08-28 14:18:26',
+                'name' => 'Extra Income',
+                'slug' => 'Extra Income',
+                'color' => 'green accent-4',
+                'icon' => 'bank-transfer-in',
+                'description' => 'Bonus, Gifts...',
             ),
         ), 'id');
     }

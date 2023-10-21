@@ -57,6 +57,11 @@
             <!-- HANDLE CATEGORY SELECT -->
         </template>
     </v-data-table>
+    <category-unrecognized-dialog
+        v-if="isNewCategoriesDialogActive"
+        key="unrecognized-categories"
+        :categories="unrecognizedCategories"
+    />
 </template>
 
 <script setup lang="ts">
@@ -92,6 +97,8 @@ function updateValue(id: string | number, key: string, value: string | number) {
     foundItem[key] = value;
 }
 
+const categoryStore = useCategoryStore();
+
 const copiedTransactions = ref([]);
 let transactionsArray = ref<TransactionObj[]>([]);
 let descriptionKey = ref("str_0");
@@ -112,6 +119,8 @@ const stringFields = computed(() =>
 const valueFields = computed(() =>
     [...Array(valueIndex).keys()].map((i) => `value_${i}`)
 );
+const unrecognizedCategories = ref([]);
+const isNewCategoriesDialogActive = ref(false);
 
 function formatTransactions(string: string) {
     copiedTransactions.value = string
@@ -119,26 +128,25 @@ function formatTransactions(string: string) {
         .split("&*&")
         .filter((e) => !!e.trim() && e.trim() !== "");
 
-    let valuesIndexes: number[] = [];
-    let transactionLength = -1;
-    let firstDateIndex = 0;
     let accumulatedIndex = 0;
     const tmpTransactionsArray = deepClone(copiedTransactions.value);
-    let transaction = [];
     let nextTransactionStart = 1;
     do {
         const newArray = tmpTransactionsArray.slice(accumulatedIndex);
         nextTransactionStart = findNextTransactionStart(newArray);
         if (nextTransactionStart < 0) break;
-        const newTransaction = buildTransactionObj(
-            newArray.slice(0, nextTransactionStart || newArray.length)
+        transactionsArray.value.push(
+            buildTransactionObj(
+                newArray.slice(0, nextTransactionStart || newArray.length)
+            )
         );
-        transactionsArray.value.push(newTransaction);
         accumulatedIndex += nextTransactionStart;
     } while (
         accumulatedIndex < tmpTransactionsArray.length &&
         nextTransactionStart > 0
     );
+
+    inferTransactionObjFields();
 }
 
 function findNextTransactionStart(array: string[]): number {
@@ -214,6 +222,90 @@ function buildTransactionObj(array: string[]) {
     return tmp;
 }
 
+function inferTransactionObjFields() {
+    console.log("INFER CALLED");
+
+    let probableCategoryField: string | null = null;
+    let probableDescriptionField: string = "";
+
+    let largestObj = transactionsArray.value[0];
+    transactionsArray.value.forEach((e) => {
+        if (Object.keys(e).length > Object.keys(largestObj).length)
+            largestObj = e;
+    });
+    const strKeys = Object.keys(largestObj).filter((e) => e.includes("str"));
+
+    for (const [i, t] of transactionsArray.value.entries()) {
+        for (const key of strKeys) {
+            if (
+                !probableCategoryField &&
+                categoryStore.index.some(
+                    (c) =>
+                        c.name
+                            .toLowerCase()
+                            .includes(`${t[key]}`.toLowerCase()) ||
+                        `${t[key]}`.toLowerCase().includes(c.name.toLowerCase())
+                )
+            ) {
+                probableCategoryField = key;
+            }
+
+            if (
+                `${t[key]}`.length >
+                `${t[probableDescriptionField] || ""}`.length
+            )
+                probableDescriptionField = key;
+        }
+        if (i > 10) break;
+    }
+    console.log(probableCategoryField, probableDescriptionField);
+
+    if (
+        !probableCategoryField ||
+        !probableDescriptionField ||
+        probableCategoryField === probableDescriptionField
+    )
+        return;
+    mapFields(probableCategoryField, probableDescriptionField);
+    mapUncategorizedExpenses(probableCategoryField);
+
+    // if (strKeys.length === 2) {
+    //     probableDescriptionField = strKeys.filter(
+    //         (e) => e !== probableCategoryField
+    //     )[0];
+    //     mapFields(probableCategoryField, probableDescriptionField);
+    //     return;
+    // }
+}
+
+function mapFields(categoryKey: string, descriptionKey: string) {
+    transactionsArray.value = transactionsArray.value.map((e) => ({
+        ...e,
+        category_id:
+            categoryStore.index.find(
+                (c) => c.name.toLowerCase() === e[categoryKey].toLowerCase()
+            )?.id || null,
+        description: e[descriptionKey],
+    }));
+}
+
+function mapUncategorizedExpenses(categoryField: string) {
+    transactionsArray.value.forEach((e) => {
+        if (!e.category_id) unrecognizedCategories.value.push(e[categoryField]);
+    });
+    unrecognizedCategories.value = [...new Set(unrecognizedCategories.value)];
+    if (unrecognizedCategories.value.length) fireNewCategoriesDialog();
+}
+
+function fireNewCategoriesDialog() {
+    isNewCategoriesDialogActive.value = true;
+}
+
+/**
+ *
+ * Requests Functions
+ *
+ */
 let isSaving = ref(false);
 function removeItem(id: string) {
     transactionsArray = transactionsArray.value.filter((e) => e.id !== id);
@@ -277,17 +369,6 @@ async function saveAll() {
     } finally {
         isSaving.value = false;
     }
-}
-
-// UPDATING FIELDS
-let updatingField = ref();
-let updatingFieldId = ref();
-
-function editField(id, field) {
-    console.log("EDIT FIELD", id, field);
-
-    updatingFieldId.value = id;
-    updatingField.value = field;
 }
 </script>
 

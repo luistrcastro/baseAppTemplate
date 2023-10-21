@@ -56,6 +56,7 @@ class Category extends Model
     protected $casts = [
         'user_id' => 'integer',
         'parent_category_id' => 'integer',
+        'month_budget_id' => 'integer',
         'name' => 'string',
         'slug' => 'string',
         'color' => 'string',
@@ -70,6 +71,7 @@ class Category extends Model
      */
     public static array $createRules = [
         'parent_category_id' => 'nullable|integer',
+        'month_budget_id' => 'nullable|integer',
         'name' => 'required|string|max:25',
         'slug' => 'required|string|max:25',
         'color' => 'required|string|max:25',
@@ -79,6 +81,7 @@ class Category extends Model
 
     public static array $updateRules = [
         'parent_category_id' => 'nullable|integer',
+        'month_budget_id' => 'nullable|integer',
         'name' => 'required|string|max:25',
         'slug' => 'required|string|max:25',
         'color' => 'required|string|max:25',
@@ -89,7 +92,7 @@ class Category extends Model
     /**---------------------
      * - Relationships:
      * ---------------------**/
-    public const relations = ['user'];
+    public const relations = ['user', 'monthBudget'];
 
     /**
      * Get the user the category belongs to.
@@ -97,6 +100,14 @@ class Category extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the month budget the category belongs to.
+     */
+    public function monthBudget(): BelongsTo
+    {
+      return $this->belongsTo(MonthBudget::class, 'month_budget_id');
     }
 
     /**---------------------

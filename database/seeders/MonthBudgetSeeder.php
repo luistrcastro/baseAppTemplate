@@ -13,7 +13,7 @@ class MonthBudgetSeeder extends Seeder
    */
   public function run(): void
   {
-    DB::table('categories')->upsert(array (
+    DB::table('month_budgets')->upsert(array (
       0 =>
       array (
         'id' => 1,
@@ -22,7 +22,8 @@ class MonthBudgetSeeder extends Seeder
         'color' => 'blue-darken-4',
         'icon' => 'cash-plus',
         'description' => 'Month income transactions',
-        'type' => 'income'
+        'type' => 'income',
+        'percentage' => null
       ),
       1 =>
       array (
