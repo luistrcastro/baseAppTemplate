@@ -18,6 +18,8 @@ class MonthBudget extends Model
     use HashedId;
     use SoftDeletes;
 
+    public $table = 'month_budgets';
+
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';
 
@@ -41,9 +43,9 @@ class MonthBudget extends Model
       'icon',
       'description',
       'percentage'
-  ];
+    ];
 
-   /**
+    /**
      * The attributes that should be casted to native types.
      *
      * @var string[]
@@ -54,16 +56,16 @@ class MonthBudget extends Model
       'color' => 'string',
       'icon' => 'string',
       'description' => 'string',
-      'percentage' => 'decimal',
+      'percentage' => 'decimal:2',
       'type' => 'string'
-  ];
+    ];
 
-  /**
-   * Validation rules.
-   *
-   * @var string[]
-   */
-  public static array $createRules = [
+    /**
+     * Validation rules.
+     *
+     * @var string[]
+     */
+    public static array $createRules = [
       'name' => 'required|string|max:25',
       'color' => 'required|string|max:25',
       'icon' => 'required|string|max:25',
@@ -79,27 +81,27 @@ class MonthBudget extends Model
       'description' => 'nullable|string|max:255',
       'percentage' => 'nullable|decimal',
       'type' => 'required|in:income,expense'
-  ];
+    ];
 
-  /**---------------------
-   * - Relationships:
-   * ---------------------**/
-  public const relations = ['user'];
-
-  /**
-   * Get the user the category belongs to.
-   */
-  public function user(): BelongsTo
-  {
-      return $this->belongsTo(User::class, 'user_id');
-  }
-
-  /**---------------------
-     * - Accessors and Mutators:
+    /**---------------------
+     * - Relationships:
      * ---------------------**/
+    public const relations = ['user'];
 
-     public function userId(): Attribute
-     {
-         return Attribute::get(fn($value)=> HashableService::getHash($value, 'User'));
-     }
+    /**
+     * Get the user the category belongs to.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**---------------------
+    * - Accessors and Mutators:
+    * ---------------------**/
+
+    public function userId(): Attribute
+    {
+        return Attribute::get(fn($value)=> HashableService::getHash($value, 'User'));
+    }
 }

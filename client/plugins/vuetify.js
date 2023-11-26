@@ -2,8 +2,6 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { light, dark } from "../assets/appThemes";
-import { VDatePicker } from "vuetify/labs/VDatePicker";
-import { VDataTable } from "vuetify/labs/VDataTable";
 import DayJsAdapter from "@date-io/dayjs";
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -11,8 +9,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         ssr: true,
         components: {
             ...components,
-            VDatePicker,
-            VDataTable,
         },
         date: {
             adapter: DayJsAdapter,

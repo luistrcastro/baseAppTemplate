@@ -37,7 +37,6 @@
 
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
-import deepClone from "~/helpers/deepClone";
 
 const props = defineProps({
     modelValue: { required: true, type: String },

@@ -40,18 +40,11 @@
         :items="transactionsArray"
         item-value="name"
     >
-        <template #item.date="{ item, value }">
-            <basic-date-picker
-                :modelValue="value"
-                hide-details="auto"
-                @update:modelValue="updateValue(item.id, 'date', $event)"
-            />
+        <template #item.date="{ item }">
+            <basic-date-picker v-model="item.date" hide-details="auto" />
         </template>
         <template #item.str_0="{ item, value }">
-            <transactions-str-input
-                :modelValue="value"
-                @update:model-value="updateValue(item.id, 'str_0', $event)"
-            />
+            <transactions-str-input v-model="item.str_0" />
         </template>
         <template #item.str_1="{ item, value }">
             <!-- HANDLE CATEGORY SELECT -->
@@ -59,9 +52,33 @@
     </v-data-table>
     <category-unrecognized-dialog
         v-if="isNewCategoriesDialogActive"
+        v-model:isDialogActive="isNewCategoriesDialogActive"
         key="unrecognized-categories"
         :categories="unrecognizedCategories"
     />
+    <v-bottom-sheet :modelValue="displayNewCategoriesWarning">
+        <v-card title="New Categories">
+            <div class="d-flex justify-space-between px-4 py-3">
+                <span class="ma-2">
+                    We identified new categories in the transactions you
+                    provided. Would you like to save them?
+                </span>
+                <div>
+                    <v-btn
+                        text="Save"
+                        color="success"
+                        @click="fireNewCategoriesDialog"
+                    />
+                    <v-btn
+                        color="error"
+                        text="Cancel"
+                        variant="text"
+                        @click="displayNewCategoriesWarning = false"
+                    />
+                </div>
+            </div>
+        </v-card>
+    </v-bottom-sheet>
 </template>
 
 <script setup lang="ts">
@@ -92,10 +109,7 @@ const headers = [
     },
 ];
 
-function updateValue(id: string | number, key: string, value: string | number) {
-    const foundItem = transactionsArray.value.find((e) => e.id === id);
-    foundItem[key] = value;
-}
+const displayNewCategoriesWarning = ref(false);
 
 const categoryStore = useCategoryStore();
 
@@ -223,8 +237,6 @@ function buildTransactionObj(array: string[]) {
 }
 
 function inferTransactionObjFields() {
-    console.log("INFER CALLED");
-
     let probableCategoryField: string | null = null;
     let probableDescriptionField: string = "";
 
@@ -258,7 +270,6 @@ function inferTransactionObjFields() {
         }
         if (i > 10) break;
     }
-    console.log(probableCategoryField, probableDescriptionField);
 
     if (
         !probableCategoryField ||
@@ -294,10 +305,12 @@ function mapUncategorizedExpenses(categoryField: string) {
         if (!e.category_id) unrecognizedCategories.value.push(e[categoryField]);
     });
     unrecognizedCategories.value = [...new Set(unrecognizedCategories.value)];
-    if (unrecognizedCategories.value.length) fireNewCategoriesDialog();
+    if (unrecognizedCategories.value.length)
+        displayNewCategoriesWarning.value = true;
 }
 
 function fireNewCategoriesDialog() {
+    displayNewCategoriesWarning.value = false;
     isNewCategoriesDialogActive.value = true;
 }
 
@@ -327,7 +340,6 @@ async function saveItem(item: { id: string }) {
             timeout: 3000,
         });
         removeItem(item.id);
-        console.log(["SAVE ITEM", response]);
         // TODO handle response - probably send it to transactions store
     } catch (error) {
         useSnackbarStore().SHOW_MESSAGE({
@@ -359,7 +371,6 @@ async function saveAll() {
             timeout: 3000,
         });
         // TODO handle response - probably send it to transactions store
-        console.log(["SAVE ALL", response]);
     } catch (error) {
         useSnackbarStore().SHOW_MESSAGE({
             content: `${error}`,

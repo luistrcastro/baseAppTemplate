@@ -22,6 +22,6 @@ class StoreMonthBudgetRequest extends FormRequest
      */
     public function rules(): array
     {
-        return MonthBudget::$createRules
+        return MonthBudget::$createRules;
     }
 }

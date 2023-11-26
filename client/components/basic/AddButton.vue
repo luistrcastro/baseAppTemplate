@@ -46,7 +46,6 @@
 
 <script setup lang="ts">
 import { computed } from "@vue/reactivity";
-import { defineProps, defineEmits } from "vue";
 
 const props = defineProps({
     dialog: { type: Boolean, default: false },

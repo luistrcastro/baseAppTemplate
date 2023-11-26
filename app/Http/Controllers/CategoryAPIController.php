@@ -119,5 +119,6 @@ class CategoryAPIController extends ApiBaseController
     public function baseCategories(): JsonResponse
     {
         $result = Category::withoutGlobalScope(AuthUserScope::class)->whereNull('user_id')->get();
-        return $this->sendSuccess($result->toArray(), 'Base categories retrieved successfully');    }
+        return $this->sendSuccess($result->toArray(), 'Base categories retrieved successfully');    
+    }
 }

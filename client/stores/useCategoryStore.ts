@@ -23,7 +23,7 @@ const template = defineStore("categoryStore", {
                         method: "get",
                     }
                 );
-                this.baseCategories = response.data;
+                this.baseCategories = this.sortCategories(response.data);
             } catch (error) {
                 // TODO handle error
                 console.log([error]);
@@ -35,7 +35,7 @@ const template = defineStore("categoryStore", {
                 const response: Response = await $larafetch(this.url, {
                     method: "get",
                 });
-                this.index = response.data;
+                this.index = this.sortCategories(response.data);
                 this.storeReady = true;
             } catch (error) {
                 // TODO handle error
@@ -45,11 +45,14 @@ const template = defineStore("categoryStore", {
         addItem(item: Object) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const response: Response = await $larafetch(this.url, {
+                    const response: ICategory = await $larafetch(this.url, {
                         method: "post",
                         body: item,
                     });
-                    this.index.unshift(response.data);
+                    this.index = this.sortCategories([
+                        ...this.index,
+                        response.data,
+                    ]);
                     return resolve;
                 } catch (error) {
                     // TODO handle error
@@ -68,7 +71,9 @@ const template = defineStore("categoryStore", {
                             body: item,
                         }
                     );
-                    this.index = upsertById(this.index, response.data);
+                    this.index = this.sortCategories(
+                        upsertById(this.index, response.data)
+                    );
                     return resolve;
                 } catch (error) {
                     // TODO handle error
@@ -91,6 +96,38 @@ const template = defineStore("categoryStore", {
                     return reject(error);
                 }
             });
+        },
+        sortCategories(data: ICategory[]) {
+            return data.sort((a, b) =>
+                (a.name || "") > (b.name || "") ? 1 : -1
+            );
+        },
+    },
+
+    getters: {
+        getById:
+            ({ index }) =>
+            (id: number) =>
+                index.find((c) => c.id === id),
+        getTopParent: ({ index }) => {
+            const findParent = (
+                category: ICategory | undefined
+            ): ICategory | undefined =>
+                category && category.parent_category_id
+                    ? findParent(
+                          index.find(
+                              (c) => c.id === category.parent_category_id
+                          )
+                      )
+                    : category;
+
+            return (id: number) => findParent(index.find((c) => c.id === id));
+        },
+        getNotHidden({ index }) {
+            return index.filter((e) => !e.is_hidden);
+        },
+        filterOutChildren({ index }) {
+            return index.filter((e) => !e.parent_category_id);
         },
     },
 });
